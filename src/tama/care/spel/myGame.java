@@ -259,6 +259,8 @@ public class myGame extends Activity{
 			changeBarImage();
     	}
 		bActionOnUse = temp; //this "fixes" the bug when u do button action exactly on update
+		//reset pukeOn3
+		pukeOn3 = 0;
 		updateBarIsOn = false;
 		checkEndAction();
 	}
