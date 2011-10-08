@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="horizontal"
+  android:id="@+id/LLGameS">
+    <TableLayout android:layout_width="fill_parent" 
+    			 android:layout_height="wrap_content" 
+    			 android:id="@+id/tableLayout1">
+    			 
+    <FrameLayout android:layout_width="wrap_content" 
+    android:id="@+id/frameLayout1" 
+    android:layout_height="match_parent">
+    
+    <TextView android:id="@+id/tvName" 
+    android:layout_height="wrap_content" 
+    android:layout_gravity="center_horizontal" 
+    android:layout_width="wrap_content" 
+    android:textSize="25dp" 
+    android:textColor="#ffffffff"
+    android:text=""></TextView>
+    </FrameLayout>
+    <LinearLayout android:id="@+id/linearLayout4" android:layout_height="wrap_content" android:layout_width="wrap_content">
+        <TextView android:text="Hungery Bar" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_weight="50"></TextView>
+        <TextView android:text="Hygien Bar" android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="70"></TextView>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="wrap_content">
+        <ImageView android:src="@drawable/bar0" android:layout_gravity="center" android:layout_height="wrap_content" android:id="@+id/ivHungry" android:layout_weight="33" android:layout_width="wrap_content"></ImageView>
+        <AnalogClock android:layout_width="50dp" android:id="@+id/analogClock1" android:layout_gravity="center_horizontal" android:layout_weight="33" android:layout_height="50dp"></AnalogClock>
+        <ImageView android:layout_weight="33" android:src="@drawable/bar0" android:layout_gravity="center" android:id="@+id/ivHygien" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/linearLayout5" android:layout_height="wrap_content" android:layout_width="wrap_content">
+        <TextView android:text="Loyalty Bar" android:id="@+id/textView3" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_weight="50"></TextView>
+        <TextView android:text="Mood Bar" android:id="@+id/textView4" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="70"></TextView>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:layout_width="wrap_content">
+        <ImageView android:src="@drawable/bar0" android:layout_height="wrap_content" android:id="@+id/ivLoyalty" android:layout_weight="33" android:layout_width="wrap_content" android:layout_gravity="center_horizontal"></ImageView>
+        <ImageView android:src="@drawable/day1" android:id="@+id/imageView5" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_width="50dp" android:layout_weight="33"></ImageView>
+        <ImageView android:src="@drawable/bar0" android:layout_height="wrap_content" android:id="@+id/ivMood" android:layout_width="wrap_content" android:layout_weight="33" android:layout_gravity="center_horizontal"></ImageView>
+    </LinearLayout>
+    
+    <FrameLayout android:layout_width="wrap_content" 
+    android:id="@+id/frameLayout1" 
+    android:layout_height="match_parent">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivmyChar" android:layout_gravity="center_horizontal"></ImageView>
+        </FrameLayout>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="match_parent" android:layout_width="fill_parent">
+        <ImageButton android:id="@+id/ibfeed" android:src="@drawable/feedicon" android:layout_height="wrap_content" android:layout_weight="25" android:layout_width="wrap_content"></ImageButton>
+        <ImageButton android:layout_width="wrap_content" android:id="@+id/ibclean" android:src="@drawable/cleanicon" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
+        <ImageButton android:layout_width="wrap_content" android:id="@+id/ibplay" android:src="@drawable/playicon" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
+        <ImageButton android:layout_width="wrap_content" android:id="@+id/ibslap" android:src="@drawable/slapicon" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
+    </LinearLayout>
+    
+    </TableLayout>
+    
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, myMain!</string>
+    <string name="app_name">TamaCare</string>
+    <string name="nyspel">New Game</string>
+    <string name="errorName">*Please enter name to continue*</string>
+    <string name="errorRace">*Please select race to continue*</string>
+    <string name="errorNameRace">*Please enter name &amp; select race to continue*</string>
+</resources>

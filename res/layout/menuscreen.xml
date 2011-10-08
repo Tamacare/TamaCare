@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background = "@drawable/menubackground"
+    android:gravity="bottom"
+    >
+    
+    <Button android:text="Continue" 
+    android:id="@+id/continue2" 
+    android:textSize="25dp" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" android:visibility="invisible">
+    </Button>
+    <Button android:id="@+id/newgame1" 
+    android:layout_height="wrap_content" 
+    android:textSize="25dp" 
+    android:text="New Game" 
+    android:layout_width="fill_parent">
+    </Button>
+    
+    <Button android:text="Options" 
+    android:id="@+id/options3" 
+    android:textSize="25dp" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content">
+    </Button>
+    
+    <Button android:text="Help" 
+    android:id="@+id/help4" 
+    android:textSize="25dp" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content">
+    </Button>
+    
+    <Button android:text="Credits" 
+    android:id="@+id/credits5"
+    android:textSize="25dp"  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content">
+    </Button>
+    
+	<Button android:text="Exit" 
+    android:id="@+id/exit6" 
+    android:textSize="25dp" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content">
+    </Button>
+
+    
+</LinearLayout>

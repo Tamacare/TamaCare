@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="tama.care.spel"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application	    
+    android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
+        <activity android:name=".myMain"
+                  android:label="@string/app_name"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation ="portrait">            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".myMenu"
+                  android:label="@string/app_name"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation ="portrait">
+            <intent-filter>
+                <action android:name="tama.care.spel.CLEARSCREEN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".newGame"
+                  android:label="@string/app_name"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation ="portrait">
+            <intent-filter>
+                <action android:name="tama.care.spel.NewGame" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".options"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="tama.care.spel.Options" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        
+        <activity android:name=".myHelp"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="tama.care.spel.Help" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+     
+        <activity android:name=".credits"
+                  android:label=""
+                  android:theme="@android:style/Theme.Dialog"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation ="portrait">
+            <intent-filter>
+                <action android:name="tama.care.spel.Credits" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".myGame"
+                  android:label="@string/app_name"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation ="portrait">
+            <intent-filter>
+                <action android:name="tama.care.spel.THEGAME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+   
+    </application>
+</manifest>
