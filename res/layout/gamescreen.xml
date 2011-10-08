@@ -3,11 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
-  android:orientation="horizontal"
-  android:id="@+id/LLGameS">
+  android:id="@+id/LLGameS" android:orientation="vertical">
     <TableLayout android:layout_width="fill_parent" 
-    			 android:layout_height="wrap_content" 
-    			 android:id="@+id/tableLayout1">
+    			 android:id="@+id/tableLayout1" android:orientation="vertical" android:layout_height="wrap_content" android:layout_gravity="top">
     			 
     <FrameLayout android:layout_width="wrap_content" 
     android:id="@+id/frameLayout1" 
@@ -40,18 +38,17 @@
         <ImageView android:src="@drawable/bar0" android:layout_height="wrap_content" android:id="@+id/ivMood" android:layout_width="wrap_content" android:layout_weight="33" android:layout_gravity="center_horizontal"></ImageView>
     </LinearLayout>
     
-    <FrameLayout android:layout_width="wrap_content" 
-    android:id="@+id/frameLayout1" 
-    android:layout_height="match_parent">
-        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ivmyChar" android:layout_gravity="center_horizontal"></ImageView>
-        </FrameLayout>
-    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="match_parent" android:layout_width="fill_parent">
-        <ImageButton android:id="@+id/ibfeed" android:src="@drawable/feedicon" android:layout_height="wrap_content" android:layout_weight="25" android:layout_width="wrap_content"></ImageButton>
-        <ImageButton android:layout_width="wrap_content" android:id="@+id/ibclean" android:src="@drawable/cleanicon" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
-        <ImageButton android:layout_width="wrap_content" android:id="@+id/ibplay" android:src="@drawable/playicon" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
-        <ImageButton android:layout_width="wrap_content" android:id="@+id/ibslap" android:src="@drawable/slapicon" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
-    </LinearLayout>
-    
     </TableLayout>
+    <LinearLayout android:id="@+id/linearLayout6" android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+        <FrameLayout android:id="@+id/frameLayout1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="80dp">
+            <ImageView android:id="@+id/ivmyChar" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_gravity="center_vertical|center_horizontal"></ImageView>
+        </FrameLayout>
+        <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout1" android:gravity="bottom" android:layout_height="match_parent">
+            <ImageButton android:src="@drawable/feedicon" android:id="@+id/ibfeed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
+            <ImageButton android:src="@drawable/cleanicon" android:id="@+id/ibclean" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
+            <ImageButton android:src="@drawable/playicon" android:id="@+id/ibplay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
+            <ImageButton android:src="@drawable/slapicon" android:id="@+id/ibslap" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="25"></ImageButton>
+        </LinearLayout>
+    </LinearLayout>
     
 </LinearLayout>
