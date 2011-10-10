@@ -8,13 +8,16 @@ import android.os.Bundle;
 
 public class myMain extends Activity {
     /** Called when the activity is first created. */
+	
+	MediaPlayer mpSplash;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
         
-        MediaPlayer splashscreen = MediaPlayer.create(this, R.raw.splash);
-        splashscreen.start();
+        mpSplash = MediaPlayer.create(this, R.raw.splash);
+        mpSplash.start();
         
         
         Thread logoTimer = new Thread(){
@@ -32,6 +35,7 @@ public class myMain extends Activity {
         		}
         		
         		finally{
+        			mpSplash.stop();
         			finish();
         		}
         	}

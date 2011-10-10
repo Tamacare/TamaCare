@@ -24,6 +24,9 @@ public class myHelp extends Activity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.helpscreen);
+		
+		//Resume background sound
+		myMenu.mpBackgroundSound.start();
 			
 		showhelpText1 = (TextView) findViewById(R.id.tvHelp1);
 		showhelpText2 = (TextView) findViewById(R.id.tvHelp2);
@@ -119,8 +122,18 @@ public class myHelp extends Activity{
 		super.onConfigurationChanged(newConfig);
 	}
 
+	//BRA ATT HA NÄR MAN TRYCKER PÅ TILLBAKA KNAPPEN!
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		myMenu.mpBackgroundSound.pause();
+	}
 	
-	
-	
-
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		myMenu.mpBackgroundSound.start();
+	}
 }

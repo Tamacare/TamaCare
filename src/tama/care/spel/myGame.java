@@ -34,6 +34,7 @@ public class myGame extends Activity{
 	boolean timeToPuke;
 	int inactiveCount; //inactiveCount is the counter for sleeping switch image
 	boolean isCharNeutral; //checks if neutral image is already set
+	boolean gameIsPaused; //See if game is paused
 	
 	LinearLayout ln;
 	Date dt = new Date();
@@ -56,8 +57,12 @@ public class myGame extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gamescreen);
 		
+		//Resume background sound
+		myMenu.mpBackgroundSound.start();
+		
 		//hoursBefore = dt.getHours();
 	    //minutesBefore = dt.getMinutes();
+		gameIsPaused = false;
 		pukeOn3 = 0;
 		forceIt = 0;
 		timeToPuke = false;
@@ -88,7 +93,7 @@ public class myGame extends Activity{
 	        				counter = 0;
 	        			}
 	        			inactiveCount++;
-		        		if(inactiveCount == 30 && isCharNeutral){
+		        		if(inactiveCount == 30 && isCharNeutral && !gameIsPaused){
 		        			switchCharImage(7);
 		        			isCharNeutral = false;
 		        		}
@@ -617,6 +622,16 @@ public class myGame extends Activity{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		gameIsPaused = true;
+		myMenu.mpBackgroundSound.pause();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		gameIsPaused = false;
+		myMenu.mpBackgroundSound.start();
 	}
 	
 }

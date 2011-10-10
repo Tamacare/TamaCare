@@ -11,6 +11,7 @@ import android.widget.Button;
 public class myMenu extends Activity {
 	
 	MediaPlayer mpbutton;
+	static MediaPlayer mpBackgroundSound;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,10 @@ public class myMenu extends Activity {
 		setContentView(R.layout.menuscreen);
 		
 		mpbutton = MediaPlayer.create(this, R.raw.button);
+		//Background sound
+		mpBackgroundSound = MediaPlayer.create(this, R.raw.bgsound);
+		mpBackgroundSound.start();
+		mpBackgroundSound.setLooping(true);
 		
 		Button bcontinue2 = (Button) findViewById(R.id.continue2);
 		
@@ -92,8 +97,7 @@ public class myMenu extends Activity {
 				// TODO Auto-generated method stub
 				//startActivity(new Intent("tama.care.spel.Exit"));
 				mpbutton.start();
-				finish();
-				
+				onDestroy();
 			}
 		});
 		
@@ -110,6 +114,22 @@ public class myMenu extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		myMenu.mpBackgroundSound.pause();
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		myMenu.mpBackgroundSound.start();
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		mpBackgroundSound.stop();
+		finish();
+	}
+	
 }

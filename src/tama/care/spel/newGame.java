@@ -27,6 +27,8 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.createscreen);
 		
+		myMenu.mpBackgroundSound.start();
+		
 		cRace = 0;
 		sn = "";
 		
@@ -46,7 +48,7 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub				
-				startActivity(new Intent("tama.care.spel.CLEARSCREEN"));
+				onDestroy();
 			}
 		});
 		
@@ -109,12 +111,15 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		myMenu.mpBackgroundSound.pause();
 		finish();
 	}
 
-
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		finish();
+	}
 	
-	
-	
-
 }

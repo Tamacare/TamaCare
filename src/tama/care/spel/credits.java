@@ -12,6 +12,9 @@ public class credits extends Activity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.creditsscreen);
+		
+		//Resume background sound
+		myMenu.mpBackgroundSound.start();
 	}
 
 	//Fixes the bug restarting activity when screen rotates
@@ -21,7 +24,18 @@ public class credits extends Activity{
 		super.onConfigurationChanged(newConfig);
 	}
 	
+	//BRA ATT HA NÄR MAN TRYCKER PÅ TILLBAKA KNAPPEN!
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		myMenu.mpBackgroundSound.pause();
+	}
 	
-	
-
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		myMenu.mpBackgroundSound.start();
+	}
 }
