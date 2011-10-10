@@ -27,12 +27,13 @@ public class myGame extends Activity{
 	Handler handler = new Handler();
 	int charRace = newGame.cRace;
 	boolean onlyOneClick = true;
-	//int gameOver=0;
 	int barPointer;
 	int counter=0;
 	int temp=0; //FIXES THE BUG SWITCHING FROM TIMERTASK TO BUTTON ACTION
 	int pukeOn3, forceIt;
 	boolean timeToPuke;
+	int inactiveCount; //inactiveCount is the counter for sleeping switch image
+	boolean isCharNeutral; //checks if neutral image is already set
 	
 	LinearLayout ln;
 	Date dt = new Date();
@@ -60,6 +61,7 @@ public class myGame extends Activity{
 		pukeOn3 = 0;
 		forceIt = 0;
 		timeToPuke = false;
+		inactiveCount = 0;
 	    
 		showName = (TextView) findViewById(R.id.tvName);
 		myChar = (ImageView) findViewById(R.id.ivmyChar);
@@ -83,12 +85,13 @@ public class myGame extends Activity{
 	        			if(counter == 60){
 	        				//do once every 60 seconds
 	        				updateTheGame();
-	        				counter=0;
+	        				counter = 0;
 	        			}
-	        			//TEST below
-	        			//hoursBefore++;
-	        		    //String curTime = hoursBefore + ":" + minutesBefore + ":" + bar[3];
-	        		    //showName.setText(curTime);
+	        			inactiveCount++;
+		        		if(inactiveCount == 30 && isCharNeutral){
+		        			switchCharImage(7);
+		        			isCharNeutral = false;
+		        		}
 	                } 
 	            }); 
 	    }}; 
@@ -109,73 +112,25 @@ public class myGame extends Activity{
 					bActionOnUse = bAction;
 	        		bAction = 0;
 	        		temp = bActionOnUse;
-					switch(bActionOnUse){
-						case 1: //FEED
-							if(bar[1] != 10){
-								switchCharImage(bActionOnUse);
-								moodChanger(1);
-								sleepThenDo();
-								forceIt = 0;
-							}
-							else{
-								if(forceIt == 1){
-									pukeOn3++;
-									if(pukeOn3 == 3){
-					        			timeToPuke = true;
-					        		}
-									if(timeToPuke){
-										makeItPuke();
-										pukeOn3 = 0;
-										forceIt = 0;
-										timeToPuke = false;
-									}
-									else{
-										switchCharImage(bActionOnUse);
-										moodChanger(2);
-										sleepThenDo();
-										forceIt = 0;
-									}
-								}
-								else{
-									switchCharImage(5);
-									moodChanger(2);
-									sleepThenDo();
-								}
-							}
-							break;
-						case 2: //CLEAN
-							forceIt = 0;
-							if(bar[2] != 10){
-								switchCharImage(bActionOnUse);
-								moodChanger(1);
-								sleepThenDo();
-							}
-							else{
-								switchCharImage(5);
-								moodChanger(2);
-								sleepThenDo();
-							}
-							break;
-						case 3: //PLAY
-							forceIt = 0;
-							if(bar[3] != 10){
-								switchCharImage(bActionOnUse);
-								moodChanger(1);
-								sleepThenDo();
-							}
-							else{
-								switchCharImage(5);
-								moodChanger(2);
-								sleepThenDo();
-							}
-							break;
-						case 4: //SLAP
-							forceIt = 1;
-							switchCharImage(bActionOnUse);
-							moodChanger(2);
-							sleepThenDo();
-							break;
-					}
+	        		if(!isCharNeutral){
+	        			int afterSleepDelay;
+	        			if(bActionOnUse == 4){
+	        				afterSleepDelay = 0;
+	        			}
+	        			else{
+	        				afterSleepDelay = 300;
+	        			}
+	        			setCharImage();
+    				    handler.postDelayed(new Runnable() { 
+    						public void run() {
+    							OnCharClickOpt();
+    						}
+    					}, afterSleepDelay);
+	        		}
+	        		else{
+	        			OnCharClickOpt();
+	        		}
+	        		inactiveCount = 0;
 				}
 			}
 		});
@@ -265,6 +220,76 @@ public class myGame extends Activity{
 		checkEndAction();
 	}
 	
+	public void OnCharClickOpt(){
+		switch(bActionOnUse){
+			case 1: //FEED
+				if(bar[1] != 10){
+					switchCharImage(bActionOnUse);
+					moodChanger(1);
+					sleepThenDo();
+					forceIt = 0;
+				}
+				else{
+					if(forceIt == 1){
+						pukeOn3++;
+						if(pukeOn3 == 3){
+		        			timeToPuke = true;
+		        		}
+						if(timeToPuke){
+							makeItPuke();
+							pukeOn3 = 0;
+							forceIt = 0;
+							timeToPuke = false;
+						}
+						else{
+							switchCharImage(bActionOnUse);
+							moodChanger(2);
+							sleepThenDo();
+							forceIt = 0;
+						}
+					}
+					else{
+						switchCharImage(5);
+						moodChanger(2);
+						sleepThenDo();
+					}
+				}
+				break;
+			case 2: //CLEAN
+				forceIt = 0;
+				if(bar[2] != 10){
+					switchCharImage(bActionOnUse);
+					moodChanger(1);
+					sleepThenDo();
+				}
+				else{
+					switchCharImage(5);
+					moodChanger(2);
+					sleepThenDo();
+				}
+				break;
+			case 3: //PLAY
+				forceIt = 0;
+				if(bar[3] != 10){
+					switchCharImage(bActionOnUse);
+					moodChanger(1);
+					sleepThenDo();
+				}
+				else{
+					switchCharImage(5);
+					moodChanger(2);
+					sleepThenDo();
+				}
+				break;
+			case 4: //SLAP
+				forceIt = 1;
+				switchCharImage(bActionOnUse);
+				moodChanger(2);
+				sleepThenDo();
+				break;
+		}
+	}
+	
 	public void sleepThenDo(){
 		// SLEEP 2000 MILLISECONDS HERE ... 
 	    handler.postDelayed(new Runnable() { 
@@ -297,22 +322,23 @@ public class myGame extends Activity{
 				myChar.setImageResource(R.drawable.yellowchar);
 				break;
 		}
+		isCharNeutral = true;
 	}
 	
 	public void adjustBackground(){
 		
 		hoursNow = dt.getHours();
 		
-		if(hoursNow>=6 && hoursNow<=12){
+		if(hoursNow>=4 && hoursNow<=9){
 	    	ln.setBackgroundResource(R.drawable.tmorning);
 	    }
-	    else if(hoursNow>=12 && hoursNow<18){
+	    else if(hoursNow>=10 && hoursNow<=15){
 	    	ln.setBackgroundResource(R.drawable.tnoon);
 	    }
-	    else if(hoursNow>=18 && hoursNow<24){
+	    else if(hoursNow>=16 && hoursNow<=21){
 	    	ln.setBackgroundResource(R.drawable.tafternoon);
 	    }
-	    if(hoursNow>=0 && hoursNow<6){
+	    if((hoursNow>=22 && hoursNow<=23) || (hoursNow>=0 && hoursNow<=3)){
 	    	ln.setBackgroundResource(R.drawable.tnight);
 	    }
 	}
@@ -416,6 +442,23 @@ public class myGame extends Activity{
 	    				myChar.setImageResource(R.drawable.bluechar);
 	    				break;
 	    		}
+	    		break;
+	    	case 7:
+	    		//"CHARACTER SLEEPS" image
+	    		mpAction = MediaPlayer.create(this, R.raw.button);
+	    		mpAction.start();
+	    		switch(charRace){
+	    			case 1:
+	    				myChar.setImageResource(R.drawable.sleepingfluffy);
+	    				break;
+	    			case 2:
+	    				myChar.setImageResource(R.drawable.bluechar);
+	    				break;
+	    			case 3:
+	    				myChar.setImageResource(R.drawable.bluechar);
+	    				break;
+	    		}
+	    		isCharNeutral = false;
 	    		break;
 	    }
 	}
@@ -527,7 +570,6 @@ public class myGame extends Activity{
 					myChar.setImageResource(R.drawable.day1);
 					break;
 			}
-			//gameOver = 1;
 			myChar.setClickable(false);
 			updateThis.cancel();
 		}
@@ -544,7 +586,6 @@ public class myGame extends Activity{
 					myChar.setImageResource(R.drawable.day1);
 					break;
 			}
-			//gameOver = 1;
 			myChar.setClickable(false);
 			updateThis.cancel();
 		}
@@ -560,7 +601,6 @@ public class myGame extends Activity{
 					myChar.setImageResource(R.drawable.day1);
 					break;
 			}
-			//gameOver = 1;
 			myChar.setClickable(false);
 			updateThis.cancel();
 		}
