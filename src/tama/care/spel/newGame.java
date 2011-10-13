@@ -40,8 +40,6 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 		
 		writeName = (EditText) findViewById(R.id.etName);
 		
-		
-		
 		Button bCan = (Button) findViewById(R.id.bCancel);
 		bCan.setOnClickListener(new View.OnClickListener() {
 			

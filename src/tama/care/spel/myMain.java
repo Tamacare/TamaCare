@@ -8,13 +8,15 @@ import android.os.Bundle;
 
 public class myMain extends Activity {
     /** Called when the activity is first created. */
-	
+	boolean itsOnPause;
 	MediaPlayer mpSplash;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
+        
+        itsOnPause = false;
         
         mpSplash = MediaPlayer.create(this, R.raw.splash);
         mpSplash.start();
@@ -27,8 +29,10 @@ public class myMain extends Activity {
         			while(logoTimer<50){
         				sleep(100);
         				logoTimer++;
-        		}
-        		startActivity(new Intent("tama.care.spel.CLEARSCREEN"));
+        			}
+        			if(!itsOnPause){
+        				startActivity(new Intent("tama.care.spel.CLEARSCREEN"));
+        			}
         		}
         		catch (InterruptedException e) {
         			e.printStackTrace();
@@ -63,6 +67,9 @@ public class myMain extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		itsOnPause = true;
+		mpSplash.stop();
+		finish();
 	}
 
 	@Override

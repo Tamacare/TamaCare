@@ -12,6 +12,11 @@ public class myMenu extends Activity {
 	
 	MediaPlayer mpbutton;
 	static MediaPlayer mpBackgroundSound;
+	static boolean saveGameExist;
+	static String savedName = "";
+	static int savedRace = 0;
+	Button bContinue;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +30,16 @@ public class myMenu extends Activity {
 		mpBackgroundSound.start();
 		mpBackgroundSound.setLooping(true);
 		
-		Button bcontinue2 = (Button) findViewById(R.id.continue2);
+		bContinue = (Button) findViewById(R.id.continue2);
 		
-		bcontinue2.setOnClickListener(new View.OnClickListener() {
+		bContinue.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				startActivity(new Intent("tama.care.spel.Continue"));
+				loadGame();
+				startActivity(new Intent("tama.care.spel.THEGAME"));
 				mpbutton.start();
-				
 			}
 		});
 		
@@ -45,9 +50,15 @@ public class myMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				startActivity(new Intent("tama.care.spel.NewGame"));
+				if(saveGameExist){
+					myGame.deleteSaveGame();
+					checkIfGameSaved();
+					//startActivity(new Intent("tama.care.spel.STARTOVER"));
+				}
+				else{
+					startActivity(new Intent("tama.care.spel.NewGame"));
+				}
 				mpbutton.start();
-				
 			}
 		});
 				
@@ -88,19 +99,34 @@ public class myMenu extends Activity {
 			}
 		});
 				
-		Button bAvsluta = (Button) findViewById(R.id.exit6);
+		Button bExit = (Button) findViewById(R.id.exit6);
 		
-		bAvsluta.setOnClickListener(new View.OnClickListener() {
+		bExit.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//startActivity(new Intent("tama.care.spel.Exit"));
 				mpbutton.start();
 				onDestroy();
 			}
 		});
 		
+	}
+	
+	public void checkIfGameSaved(){
+		myGame.gameFile = getSharedPreferences(myGame.FILENAME, 0);
+		saveGameExist = myGame.gameFile.getBoolean("isSaveGame", false);
+		//CHECK IF SAVE GAME EXIST
+		if(saveGameExist){
+			bContinue.setVisibility(0);
+		}else{
+			bContinue.setVisibility(4);
+		}
+	}
+	
+	public void loadGame(){
+		savedName = myGame.gameFile.getString("characerName", "DEFAULT");
+		savedRace = myGame.gameFile.getInt("characterRace", 0);
 	}
 	
 	//Fixes the bug restarting activity when screen rotates
@@ -121,6 +147,7 @@ public class myMenu extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		checkIfGameSaved();
 		myMenu.mpBackgroundSound.start();
 	}
 
