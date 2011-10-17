@@ -4,7 +4,7 @@
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
-  android:background ="@drawable/newgamebakgrund"
+  android:background ="@drawable/blankbackground"
   >
   
   <TextView 
@@ -12,7 +12,7 @@
   android:layout_width="fill_parent" 
   android:textSize="20dp" 
   android:id="@+id/tvEnterN" 
-  android:text="Enter name:"/>
+  android:text="Enter name:" android:textColor="#ff000000"/>
   
   <EditText 
   android:layout_height="wrap_content" 
@@ -25,7 +25,7 @@
   			android:layout_width="wrap_content" 
   			android:textSize="20dp" 
   			android:id="@+id/tvColor" 
-  			android:text="Select race:"/>
+  			android:text="Select race:" android:textColor="#ff000000"/>
   
   <RadioGroup android:layout_height="wrap_content" 
   		      android:layout_width="fill_parent" 
@@ -37,28 +37,28 @@
 				 android:id="@+id/rbFluffy" 
 				 android:text="Fluffy" 
 				 android:layout_gravity="center" 
-				 android:layout_weight="33"/>
+				 android:layout_weight="33" android:textColor="#ff000000"/>
 				 
 	<RadioButton android:layout_height="wrap_content" 
 				 android:layout_width="wrap_content" 
-				 android:id="@+id/rbRed" 
-				 android:text="Red" 
+				 android:id="@+id/rbSpiky" 
+				 android:text="Spiky" 
 				 android:layout_gravity="center" 
-				 android:layout_weight="33"/>
+				 android:layout_weight="33" android:textColor="#ff000000"/>
 				 
 	<RadioButton android:layout_height="wrap_content" 
 				 android:layout_width="wrap_content" 
-				 android:id="@+id/rbYellow" 
-				 android:text="Yellow" 
+				 android:id="@+id/rbDrako" 
+				 android:text="Drako" 
 				 android:layout_gravity="center" 
-				 android:layout_weight="33"/>
+				 android:layout_weight="33" android:textColor="#ff000000"/>
   </RadioGroup>
   
   <ImageView android:layout_height="wrap_content" 
   			 android:layout_width="fill_parent" 
   			 android:id="@+id/ivSelectChar" android:clickable="true"/>
   <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_height="fill_parent" android:gravity="bottom">
-      <TextView android:id="@+id/tvErrorMsg" android:layout_gravity="center_horizontal" android:textSize="15dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+      <TextView android:id="@+id/tvErrorMsg" android:layout_gravity="center_horizontal" android:textSize="15dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="#ff000000"></TextView>
       <TableRow android:id="@+id/tableRow1" android:layout_width="fill_parent" android:layout_height="wrap_content">
           <Button android:layout_width="fill_parent" android:text="Cancel" android:id="@+id/bCancel" android:layout_weight="50" android:layout_height="fill_parent"></Button>
           <Button android:layout_width="fill_parent" android:text="Create" android:id="@+id/bCreate" android:layout_weight="50" android:layout_height="wrap_content"></Button>

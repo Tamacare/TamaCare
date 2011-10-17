@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, myMain!</string>
-    <string name="app_name">TamaCare</string>
     <string name="nyspel">New Game</string>
     <string name="errorName">*Please enter name to continue*</string>
     <string name="errorRace">*Please select race to continue*</string>
     <string name="errorNameRace">*Please enter name &amp; select race to continue*</string>
-    <string name="helpText1">To start playing, click on new game and give your pet both a name and a color. After this, the game will start and you will see your pet on the screen. The idea is that you should take care of your pet and get to know it. Feed, wash, play and take care of your pet as if it was a real one. To do this, there are buttons you can click under the animal. </string>
+    <string name="helpText1">To start playing, click on new game and give your pet both a name and a race. After this, the game will start and you will see your pet on the screen. The idea is that you should take care of your pet and get to know it. Feed, wash, play and take care of your pet as if it was a real one. To do this, there are buttons you can click under the animal. </string>
     <string name="helpText2">For example, to feed the pet click on the food button and then the pet. </string>
     <string name="helpText3">What is now happening is that the animal eats and the hungry-bar fills a bit. Try to always keep the bars of hunger, the mood of the pet, cleanliness, loyalty as filled as possible because that is when your pet feels the best and is most loyal.</string>
-    <string name="helpText4">If you dont feed your pet and the hungry bar goes empty, your pet will die.Keep your pet loyal to you or it will leave you.If you try to feed the pet when the hungry bar is full your pet will denie but you can foruce it to eat by slaping.But if you do it more then 3 times the pet will puke.</string>
+    <string name="helpText4">If you dont feed your pet and the hungry bar goes empty, your pet will die.Keep your pet loyal to you or it will leave you.If you try to feed the pet when the hungry bar is full your pet will deny but you can force it to eat by slaping.But if you do it more then 3 times the pet will puke.</string>
+    <string name="app_name">TamaCare</string>
 </resources>

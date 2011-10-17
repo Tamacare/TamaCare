@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 public class myMain extends Activity {
     /** Called when the activity is first created. */
+	//made to avoid problems when exiting before splash screen done
 	boolean itsOnPause;
 	MediaPlayer mpSplash;
 	
@@ -19,8 +20,8 @@ public class myMain extends Activity {
         itsOnPause = false;
         
         mpSplash = MediaPlayer.create(this, R.raw.splash);
+        checkIfMuteOn();
         mpSplash.start();
-        
         
         Thread logoTimer = new Thread(){
         	public void run(){
@@ -46,9 +47,19 @@ public class myMain extends Activity {
         };
         
         logoTimer.start();
-        
-        
     }
+    
+    public void checkIfMuteOn(){
+    	//check if mute is on, if there is no saved filed mute is off
+		myGame.gameFile = getSharedPreferences(myGame.FILENAME, 0);
+		myMenu.muteOn = myGame.gameFile.getBoolean("isMuteOn", false);
+		
+		if(myMenu.muteOn){
+			mpSplash.setVolume(0.0f, 0.0f);
+		}else{
+			mpSplash.setVolume(1.0f, 1.0f);
+		}
+	}
     
     //Fixes the bug restarting activity when screen rotates
 	@Override
@@ -89,6 +100,4 @@ public class myMain extends Activity {
 		// TODO Auto-generated method stub
 		super.onStop();
 	}
-    
-    
 }

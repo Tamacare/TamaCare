@@ -4,7 +4,7 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background ="@drawable/newgamebakgrund"
+  android:background ="@drawable/blankbackground"
   >
     
     
@@ -12,9 +12,24 @@
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="Options"
-    android:textSize="50dp"
+    android:textColor="#ff000000"
+    android:textSize="40dp"
     android:gravity="center" 
     android:textStyle="bold"/>
+  <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="center" android:layout_marginTop="45dp" android:id="@+id/linearLayout1">
+      <TextView android:textColor="#ff000000" android:textStyle="bold" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/soundTv" android:text="Sound:" android:layout_weight="50" android:textSize="25dp"></TextView>
+      <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="On" android:id="@+id/soundBon" android:layout_weight="25"></Button>
+      <Button android:layout_height="wrap_content" android:id="@+id/soundBoff" android:layout_width="wrap_content" android:text="Off" android:textStyle="bold" android:layout_weight="25"></Button>
+  </LinearLayout>
+  
+  <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="center" android:layout_marginTop="40dp">
+      <TextView android:textColor="#ff000000" android:textStyle="bold" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/timespeedTv" android:text="Updatespeed:" android:textSize="25dp" android:layout_weight="50"></TextView>
+      <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Slow" android:id="@+id/updatespeedBslow" android:layout_weight="25"></Button>
+      <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Normal" android:id="@+id/updatespeedBnormal" android:layout_weight="25"></Button>
+  </LinearLayout>
+  <TextView android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textColor="#FF000000" android:textSize="18dp" android:text="*The rate bars will decrease at*" android:gravity="center_horizontal"></TextView>
+    
+    
     
     
 </LinearLayout>

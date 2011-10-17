@@ -1,5 +1,7 @@
 package tama.care.spel;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -10,11 +12,29 @@ import android.widget.Button;
 
 public class myMenu extends Activity {
 	
-	MediaPlayer mpbutton;
+	static boolean muteOn = false;
+	static int updateSpeed = 60;
+	
+	static MediaPlayer mpbutton;
 	static MediaPlayer mpBackgroundSound;
+	//int variables to load in value to
 	static boolean saveGameExist;
 	static String savedName = "";
 	static int savedRace = 0;
+	static float savedAge = 0.0f;
+	static int savedHungryBar = 0;
+	static int savedHygienBar = 0;
+	static int savedLoyaltyBar = 0;
+	static int savedMoodBar = 0;
+	static int savedMinute = 0;
+	static int savedHour = 0;
+	static int savedDay = 0;
+	static int savedMonth = 0;
+	static int savedYear = 0;
+	//variables to handle with new time
+	Date dt = new Date();
+	static int hourNew, dayNew, monthNew, yearNew;
+	
 	Button bContinue;
 	
 	
@@ -24,9 +44,11 @@ public class myMenu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menuscreen);
 		
+		//button sound
 		mpbutton = MediaPlayer.create(this, R.raw.button);
 		//Background sound
 		mpBackgroundSound = MediaPlayer.create(this, R.raw.bgsound);
+		options.isOtherMpSoundsOnMute();
 		mpBackgroundSound.start();
 		mpBackgroundSound.setLooping(true);
 		
@@ -37,7 +59,11 @@ public class myMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				getNewTimeAndDate();
 				loadGame();
+				myContinue.calculateTimeDiff();
+				myContinue.calculateAgeAndBarValue();
+				myContinue.applyChanges();
 				startActivity(new Intent("tama.care.spel.THEGAME"));
 				mpbutton.start();
 			}
@@ -51,9 +77,7 @@ public class myMenu extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if(saveGameExist){
-					myGame.deleteSaveGame();
-					checkIfGameSaved();
-					//startActivity(new Intent("tama.care.spel.STARTOVER"));
+					startActivity(new Intent("tama.care.spel.Over"));
 				}
 				else{
 					startActivity(new Intent("tama.care.spel.NewGame"));
@@ -88,7 +112,6 @@ public class myMenu extends Activity {
 				
 		Button bCredits = (Button) findViewById(R.id.credits5);
 		
-		
 		bCredits.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -110,7 +133,13 @@ public class myMenu extends Activity {
 				onDestroy();
 			}
 		});
-		
+	}
+	
+	public void getNewTimeAndDate(){
+		hourNew = dt.getHours();
+		dayNew = dt.getDate();
+		monthNew = dt.getMonth()+1;
+		yearNew = dt.getYear();
 	}
 	
 	public void checkIfGameSaved(){
@@ -127,6 +156,17 @@ public class myMenu extends Activity {
 	public void loadGame(){
 		savedName = myGame.gameFile.getString("characerName", "DEFAULT");
 		savedRace = myGame.gameFile.getInt("characterRace", 0);
+		savedAge = myGame.gameFile.getFloat("characterAge", -1);;
+		savedHungryBar = myGame.gameFile.getInt("barHungry", -1);
+		savedHygienBar = myGame.gameFile.getInt("barHygien", -1);
+		savedLoyaltyBar = myGame.gameFile.getInt("barLoyalty", -1);
+		savedMoodBar = myGame.gameFile.getInt("barMood", -1);
+		savedMinute = myGame.gameFile.getInt("minute", -1);
+		savedHour = myGame.gameFile.getInt("hour", -1);
+		savedDay = myGame.gameFile.getInt("day", -1);
+		savedMonth = myGame.gameFile.getInt("month", -1);
+		savedYear = myGame.gameFile.getInt("year", -1);
+		updateSpeed = myGame.gameFile.getInt("updateSpeed", 60);
 	}
 	
 	//Fixes the bug restarting activity when screen rotates
@@ -156,7 +196,7 @@ public class myMenu extends Activity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		mpBackgroundSound.stop();
+		myGame.saveOptValues();
 		finish();
 	}
-	
 }

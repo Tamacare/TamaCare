@@ -86,12 +86,12 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 				charPic.setImageResource(R.drawable.neutralfluffy);
 				cRace=1;
 				break;
-			case R.id.rbRed:
-				charPic.setImageResource(R.drawable.redchar);
+			case R.id.rbSpiky:
+				charPic.setImageResource(R.drawable.neutralspiky);
 				cRace=2;
 				break;
-			case R.id.rbYellow:
-				charPic.setImageResource(R.drawable.yellowchar);
+			case R.id.rbDrako:
+				charPic.setImageResource(R.drawable.neutraldrako);
 				cRace=3;
 				break;
 		}

@@ -20,15 +20,17 @@ import tama.care.spel.newGame;
 public class myGame extends Activity{
 	
 	TextView showName;
+	TextView showAge;
 	static String nameIt = "";
+	static int charRace;
+	//character age
+	static float charAge;
 	ImageButton feedB, cleanB, playB, slapB;
 	int bAction=0, bActionOnUse=0;
-	static int bar[]={0,8,8,8,2};	//bar[0] isn't used, bar[1] is HungryBar, bar[2] is HygienBar, bar[3] is LoyaltyBar, bar[4] is MoodBar
+	static int bar[]={0,5,5,5,2};	//bar[0] isn't used, bar[1] is HungryBar, bar[2] is HygienBar, bar[3] is LoyaltyBar, bar[4] is MoodBar
 	ImageView statusBar, myChar;
 	Handler handler = new Handler();
-	static int charRace = 0;
 	boolean onlyOneClick = true;
-	int barPointer;
 	int counter=0;
 	int temp=0; //FIXES THE BUG SWITCHING FROM TIMERTASK TO BUTTON ACTION
 	int pukeOn3, forceIt;
@@ -38,9 +40,10 @@ public class myGame extends Activity{
 	boolean gameIsPaused; //See if game is paused
 	boolean gameOver;
 	
-	LinearLayout ln;
+	LinearLayout ln; //Needed for background change
+	//variables to handle with time
 	Date dt = new Date();
-	int hoursBefore, hoursNow, minutesBefore, minutesNow, timeDiff;
+	static int hourOld, dayOld, monthOld, yearOld;
 	
 	int delay = 0; // delay for 0 sec.
 	int period = 1000; // repeat every 60 sec.
@@ -50,7 +53,8 @@ public class myGame extends Activity{
 	//autoBarIsOn is use to deactivate button action until update is completed
 	boolean updateBarIsOn = false;
 	
-	MediaPlayer mpAction;
+	//MediaPlayer mpAction;
+	static MediaPlayer mpAction;
 	
 	public static final String FILENAME = "TamaCareSaveGame";
 	public static SharedPreferences gameFile;
@@ -71,8 +75,6 @@ public class myGame extends Activity{
 		//Fixes mpAction bug when going onPause directly after create
 		mpAction = MediaPlayer.create(this, R.raw.button);
 		
-		//hoursBefore = dt.getHours();
-	    //minutesBefore = dt.getMinutes();
 		gameIsPaused = false;
 		pukeOn3 = 0;
 		forceIt = 0;
@@ -89,6 +91,7 @@ public class myGame extends Activity{
 		slapB = (ImageButton) findViewById(R.id.ibslap);
 		statusBar = (ImageView) findViewById(R.id.ivHungry);
 		ln = (LinearLayout) findViewById(R.id.LLGameS);
+		showAge = (TextView) findViewById(R.id.tvAge);
 		
 		//INITIATE THE GAME!
 		initGame();
@@ -100,8 +103,8 @@ public class myGame extends Activity{
 	        		public void run() { 
 	        			adjustBackground();
 	        			counter++;
-	        			if(counter == 60){
-	        				//do once every 60 seconds
+	        			if(counter == myMenu.updateSpeed){
+	        				//do once every x seconds(x = 60 for normal and 3600 for slow)
 	        				updateTheGame();
 	        				counter = 0;
 	        			}
@@ -139,9 +142,14 @@ public class myGame extends Activity{
 	        				afterSleepDelay = 300;
 	        			}
 	        			//Stop sleeping sound
-	    				mpAction.reset();
-	    				//set back neutral character image
-	        			setCharImage();
+	        			mpAction.reset();
+	    				//If hygiene bar is 0 after wake up show not change back to stinky instead of neutral
+	    				if(bar[2] == 0){
+	    					checkEndAction();
+	    				}else{
+	    					//set back neutral character image
+		        			setCharImage();
+	    				}
     				    handler.postDelayed(new Runnable() { 
     						public void run() {
     							OnCharClickOpt();
@@ -207,24 +215,36 @@ public class myGame extends Activity{
 		gameOver = false;
 		//check if there is a save game, load it if there is one
 		if(myMenu.saveGameExist){
-			myContinue.applyChanges();
-			//CEHCK IF GAME OVER
-			checkEndAction();
+			handler.postDelayed(new Runnable() { 
+		    	public void run() {
+		    		//Check endAction with the new values
+		        	checkEndAction();
+		        } 
+		   }, 0);
 		}
 		else{
 			//Prepare for a new game
-			//SET NAME
+			//SET NAME, RACE, BIRTH AGE
 			nameIt = newGame.sn;
 			charRace = newGame.cRace;
+			charAge = 1.0f;
 			//set bar
-			bar[1] = 8;
-			bar[2] = 8;
-			bar[3] = 8;
+			bar[1] = 5;
+			bar[2] = 5;
+			bar[3] = 5;
 			bar[4] = 2;
 		}
 		
 		//SET NAME to screen
 		showName.setText(nameIt);
+		if(gameOver){
+			//Show age last time it was alive
+			showAge.setText("" + (int)myMenu.savedAge);
+		}
+		else{
+			//Show birth/new age
+			showAge.setText("" + (int)charAge);
+		}
 		//SET BACKGROUND IMAGE
 		adjustBackground();
 		//SET MOOD PICTURE
@@ -240,14 +260,13 @@ public class myGame extends Activity{
 	
 	public void updateTheGame() {
 		// TODO Auto-generated method stub
-		
 		updateBarIsOn = true;
 		//decrease bars value
-		bar[1] -= 2;
+		bar[1]--;
 		if(bar[2] != 0){
-			bar[2] -= 2;
+			bar[2]--;
 		}
-		bar[3] -= 2;
+		bar[3]--;
 		//now change bar picture accordingly to value
 		for(int i=1; i<4; i++){ 
 			bActionOnUse = i;
@@ -256,8 +275,8 @@ public class myGame extends Activity{
 		bActionOnUse = temp; //this "fixes" the bug when u do button action exactly on update
 		//reset pukeOn3
 		pukeOn3 = 0;
-		updateBarIsOn = false;
 		checkEndAction();
+		updateBarIsOn = false;
 	}
 	
 	public void OnCharClickOpt(){
@@ -337,7 +356,7 @@ public class myGame extends Activity{
 	    		mpAction.reset();
 	    		setCharImage();
 	        	if(bActionOnUse == 4){
-	        		bar[3] -= 2;
+	        		bar[3]--;
 	        	}
 	        	else{
 	        		increaseBar();
@@ -357,10 +376,10 @@ public class myGame extends Activity{
 				myChar.setImageResource(R.drawable.neutralfluffy);
 				break;
 			case 2:
-				myChar.setImageResource(R.drawable.redchar);
+				myChar.setImageResource(R.drawable.neutralspiky);
 				break;
 			case 3:
-				myChar.setImageResource(R.drawable.yellowchar);
+				myChar.setImageResource(R.drawable.neutraldrako);
 				break;
 		}
 		isCharNeutral = true;
@@ -368,18 +387,18 @@ public class myGame extends Activity{
 	
 	public void adjustBackground(){
 		
-		hoursNow = dt.getHours();
+		hourOld = dt.getHours();
 		
-		if(hoursNow>=4 && hoursNow<=9){
+		if(hourOld>=4 && hourOld<=9){
 	    	ln.setBackgroundResource(R.drawable.tmorning);
 	    }
-	    else if(hoursNow>=10 && hoursNow<=15){
+	    else if(hourOld>=10 && hourOld<=15){
 	    	ln.setBackgroundResource(R.drawable.tnoon);
 	    }
-	    else if(hoursNow>=16 && hoursNow<=21){
+	    else if(hourOld>=16 && hourOld<=21){
 	    	ln.setBackgroundResource(R.drawable.tafternoon);
 	    }
-	    if((hoursNow>=22 && hoursNow<=23) || (hoursNow>=0 && hoursNow<=3)){
+	    if((hourOld>=22 && hourOld<=23) || (hourOld>=0 && hourOld<=3)){
 	    	ln.setBackgroundResource(R.drawable.tnight);
 	    }
 	}
@@ -391,113 +410,120 @@ public class myGame extends Activity{
 	    	case 1: 
 	    		//"EATING" image
 	    		mpAction = MediaPlayer.create(this, R.raw.eatingsound);
-	    		mpAction.start();
+	    		//check this method before playing
+	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
 	    				myChar.setImageResource(R.drawable.eatingfluffy);
 	    				break;
 	    			case 2:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.eatingspiky);
 	    				break;
 	    			case 3:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.eatingdrako);
 	    				break;
 	    		}
 	    		break;
 	    	case 2: 
 	    		//"CLEANING" image
 	    		mpAction = MediaPlayer.create(this, R.raw.cleaningsound);
-	    		mpAction.start();
+	    		//check this method before playing
+	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
 	    				myChar.setImageResource(R.drawable.cleaningfluffy);
 	    				break;
 	    			case 2:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.cleaningspiky);
 	    				break;
 	    			case 3:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.cleaningdrako);
 	    				break;
 	    		}
 	    		break;
 	    	case 3:	
 	    		//"PLAYING" image
 	    		mpAction = MediaPlayer.create(this, R.raw.playingsound);
-	    		mpAction.start();
+	    		//check this method before playing
+	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
 	    				myChar.setImageResource(R.drawable.playingfluffy);
 	    				break;
 	    			case 2:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.playingspiky);
 	    				break;
 	    			case 3:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.playingdrako);
 	    				break;
 	    		}
 	    		break;
 	    	case 4:	
 	    		//"SLAPPED" image
 	    		mpAction = MediaPlayer.create(this, R.raw.slapingsound);
-	    		mpAction.start();
+	    		//check this method before playing
+	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
 	    				myChar.setImageResource(R.drawable.slappedfluffy);
 	    				break;
 	    			case 2:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.slappedspiky);
 	    				break;
 	    			case 3:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.slappeddrako);
 	    				break;
 	    		}
 	    		break;
 	    	case 5: 
 	    		//"CHARACTER DENIES" image, same for all actions
 	    		mpAction = MediaPlayer.create(this, R.raw.denysound);
-	    		mpAction.start();
+	    		//check this method before playing
+	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
 	    				myChar.setImageResource(R.drawable.denyingfluffy);
 	    				break;
 	    			case 2:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.denyingspiky);
 	    				break;
 	    			case 3:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.denyingdrako);
 	    				break;
 	    		}
 	    		break;
 	    	case 6: 
 	    		//"CHARACTER PUKES" image
 	    		mpAction = MediaPlayer.create(this, R.raw.pukesound);
-	    		mpAction.start();
+	    		//check this method before playing
+	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
 	    				myChar.setImageResource(R.drawable.pukingfluffy);
 	    				break;
 	    			case 2:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.pukingspiky);
 	    				break;
 	    			case 3:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.pukingdrako);
 	    				break;
 	    		}
 	    		break;
 	    	case 7:
 	    		//"CHARACTER SLEEPS" image
 	    		mpAction = MediaPlayer.create(this, R.raw.sleepingsound);
-	    		mpAction.start();
+	    		//check this method before playing
+	    		options.isMpActionOnMute(1);
 	    		mpAction.setLooping(true);
 	    		switch(charRace){
 	    			case 1:
 	    				myChar.setImageResource(R.drawable.sleepingfluffy);
 	    				break;
 	    			case 2:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.sleepingspiky);
 	    				break;
 	    			case 3:
-	    				myChar.setImageResource(R.drawable.bluechar);
+	    				myChar.setImageResource(R.drawable.sleepingdrako);
 	    				break;
 	    		}
 	    		isCharNeutral = false;
@@ -517,7 +543,13 @@ public class myGame extends Activity{
 			case 0:
 				statusBar.setImageResource(R.drawable.moodangry);
 				break;
+			case 1:
+				statusBar.setImageResource(R.drawable.moodangry);
+				break;
 			case 2:
+				statusBar.setImageResource(R.drawable.moodneutral);
+				break;
+			case 3:
 				statusBar.setImageResource(R.drawable.moodneutral);
 				break;
 			case 4:
@@ -533,7 +565,13 @@ public class myGame extends Activity{
 		handler.postDelayed(new Runnable() { 
 			public void run() {
 				mpAction.reset();
-				setCharImage();
+				//If hygiene bar is 0 after wake up show not change back to stinky instead of neutral
+				if(bar[2] == 0){
+					checkEndAction();
+				}else{
+					//set back neutral character image
+        			setCharImage();
+				}
 		        bar[1] = 4;
 		        changeBarImage();
 		        
@@ -546,19 +584,34 @@ public class myGame extends Activity{
 	public void increaseBar(){
 		switch(bar[bActionOnUse]){
 			case 0:
-				bar[bActionOnUse]+=2;
+				bar[bActionOnUse]+=1;
+				break;
+			case 1:
+				bar[bActionOnUse]+=1;
 				break;
 			case 2:
-				bar[bActionOnUse]+=2;
+				bar[bActionOnUse]+=1;
+				break;
+			case 3:
+				bar[bActionOnUse]+=1;
 				break;
 			case 4:
-				bar[bActionOnUse]+=2;
+				bar[bActionOnUse]+=1;
+				break;
+			case 5:
+				bar[bActionOnUse]+=1;
 				break;
 			case 6:
-				bar[bActionOnUse]+=2;
+				bar[bActionOnUse]+=1;
+				break;
+			case 7:
+				bar[bActionOnUse]+=1;
 				break;
 			case 8:
-				bar[bActionOnUse]+=2;
+				bar[bActionOnUse]+=1;
+				break;
+			case 9:
+				bar[bActionOnUse]+=1;
 				break;
 		}
 	}
@@ -582,17 +635,32 @@ public class myGame extends Activity{
 			case 0:
 				statusBar.setImageResource(R.drawable.bar0);
 				break;
+			case 1:
+				statusBar.setImageResource(R.drawable.bar10);
+				break;
 			case 2:
 				statusBar.setImageResource(R.drawable.bar20);
+				break;
+			case 3:
+				statusBar.setImageResource(R.drawable.bar30);
 				break;
 			case 4:
 				statusBar.setImageResource(R.drawable.bar40);
 				break;
+			case 5:
+				statusBar.setImageResource(R.drawable.bar50);
+				break;
 			case 6:
 				statusBar.setImageResource(R.drawable.bar60);
 				break;
+			case 7:
+				statusBar.setImageResource(R.drawable.bar70);
+				break;
 			case 8:
 				statusBar.setImageResource(R.drawable.bar80);
+				break;
+			case 9:
+				statusBar.setImageResource(R.drawable.bar90);
 				break;
 			case 10:
 				statusBar.setImageResource(R.drawable.bar100);
@@ -605,15 +673,19 @@ public class myGame extends Activity{
 			if(!isCharNeutral){
 				mpAction.reset();
 			}
+			mpAction = MediaPlayer.create(this, R.raw.deadsound);
+			myMenu.mpBackgroundSound.pause();
+			//check this method before playing
+    		options.isMpActionOnMute(1);
 			switch(charRace){
 				case 1:
 					myChar.setImageResource(R.drawable.deadfluffy);
 					break;
 				case 2:
-					myChar.setImageResource(R.drawable.day1);
+					myChar.setImageResource(R.drawable.deadspiky);
 					break;
 				case 3:
-					myChar.setImageResource(R.drawable.day1);
+					myChar.setImageResource(R.drawable.deaddrako);
 					break;
 			}
 			gameOver = true;
@@ -625,13 +697,13 @@ public class myGame extends Activity{
 			switch(charRace){
 				case 1:
 					//SHOULD BE DIRTY HERE
-					myChar.setImageResource(R.drawable.eatingfluffy);
+					myChar.setImageResource(R.drawable.stinkyfluffy);
 					break;
 				case 2:
-					myChar.setImageResource(R.drawable.day1);
+					myChar.setImageResource(R.drawable.stinkyspiky);
 					break;
 				case 3:
-					myChar.setImageResource(R.drawable.day1);
+					myChar.setImageResource(R.drawable.stinkydrako);
 					break;
 			}
 		}
@@ -639,15 +711,19 @@ public class myGame extends Activity{
 			if(!isCharNeutral){
 				mpAction.reset();
 			}
+			mpAction = MediaPlayer.create(this, R.raw.leavingsound);
+			myMenu.mpBackgroundSound.pause();
+			//check this method before playing
+    		options.isMpActionOnMute(1);
 			switch(charRace){
 				case 1:
 					myChar.setImageResource(R.drawable.leavingfluffy);
 					break;
 				case 2:
-					myChar.setImageResource(R.drawable.day1);
+					myChar.setImageResource(R.drawable.leavingspiky);
 					break;
 				case 3:
-					myChar.setImageResource(R.drawable.day1);
+					myChar.setImageResource(R.drawable.leavingdrako);
 					break;
 			}
 			gameOver = true;
@@ -658,10 +734,19 @@ public class myGame extends Activity{
 			deleteSaveGame();
 			handler.postDelayed(new Runnable() { 
 				public void run() {
+					mpAction.reset();
+					myMenu.mpBackgroundSound.start();
 					finish();
 				}
-			}, 8000);
+			}, 10000);
 		}
+	}
+	
+	public void getTimeAndDate(){
+		hourOld = dt.getHours();
+		dayOld = dt.getDate();
+		monthOld = dt.getMonth()+1;
+		yearOld = dt.getYear();
 	}
 
 	//Fixes the bug restarting activity when screen rotates
@@ -676,11 +761,22 @@ public class myGame extends Activity{
 		editor.putBoolean("isSaveGame", true);
 		editor.putString("characerName", newGame.sn);
 		editor.putInt("characterRace", newGame.cRace);
+		editor.putFloat("characterAge", charAge);
 		editor.putInt("barHungry", myGame.bar[1]);
 		editor.putInt("barHygien", myGame.bar[2]);
 		editor.putInt("barLoyalty", myGame.bar[3]);
 		editor.putInt("barMood", myGame.bar[4]);
-		//SPARA ÄVEN AGE HÄR NÄR DEN E KLAR
+		editor.putInt("hour", hourOld);
+		editor.putInt("day", dayOld);
+		editor.putInt("month", monthOld);
+		editor.putInt("year", yearOld);
+		editor.commit();
+	}
+	
+	public static void saveOptValues(){
+		editor = gameFile.edit();
+		editor.putBoolean("isMuteOn", myMenu.muteOn);
+		editor.putInt("updateSpeed", myMenu.updateSpeed);
 		editor.commit();
 	}
 	
@@ -697,11 +793,15 @@ public class myGame extends Activity{
 		super.onPause();
 		gameIsPaused = true;
 		myMenu.mpBackgroundSound.pause();
+		saveOptValues();
 		if(gameOver){
+			myMenu.mpBackgroundSound.start();
 			finish();
 		}
 		else{
+			getTimeAndDate();
 			saveGame();
+			updateThis.cancel();
 		}
 	}
 

@@ -16,12 +16,11 @@
     android:layout_gravity="center_horizontal" 
     android:layout_width="wrap_content" 
     android:textSize="25dp" 
-    android:textColor="#ffffffff"
-    android:text=""></TextView>
+    android:text="" android:textStyle="bold" android:textColor="#FF000000"></TextView>
     </FrameLayout>
     <LinearLayout android:id="@+id/linearLayout4" android:layout_height="wrap_content" android:layout_width="wrap_content">
-        <TextView android:text="Hungery Bar" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_weight="50"></TextView>
-        <TextView android:text="Hygien Bar" android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="70"></TextView>
+        <TextView android:text="Hungery Bar" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_weight="50" android:textColor="#FF000000" android:textStyle="bold"></TextView>
+        <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="70" android:textStyle="bold" android:textColor="#FF000000" android:text="Hygiene Bar"></TextView>
     </LinearLayout>
     <LinearLayout android:id="@+id/linearLayout2" android:layout_height="wrap_content" android:layout_width="wrap_content">
         <ImageView android:src="@drawable/bar0" android:layout_gravity="center" android:layout_height="wrap_content" android:id="@+id/ivHungry" android:layout_weight="33" android:layout_width="wrap_content"></ImageView>
@@ -29,13 +28,14 @@
         <ImageView android:layout_weight="33" android:src="@drawable/bar0" android:layout_gravity="center" android:id="@+id/ivHygien" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageView>
     </LinearLayout>
     <LinearLayout android:id="@+id/linearLayout5" android:layout_height="wrap_content" android:layout_width="wrap_content">
-        <TextView android:text="Loyalty Bar" android:id="@+id/textView3" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_width="fill_parent" android:layout_weight="50"></TextView>
-        <TextView android:text="Mood Bar" android:id="@+id/textView4" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="70"></TextView>
+        <TextView android:text="Loyalty Bar" android:id="@+id/textView3" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:textStyle="bold" android:textColor="#FF000000" android:layout_width="wrap_content" android:gravity="left" android:layout_weight="36"></TextView>
+        <TextView android:layout_width="wrap_content" android:id="@+id/tvShowDay" android:layout_height="wrap_content" android:textStyle="bold" android:layout_gravity="center_horizontal" android:textColor="#ff000000" android:textSize="15dp" android:text="Day" android:gravity="center_horizontal" android:layout_weight="20"></TextView>
+        <TextView android:text="Mood Bar" android:id="@+id/textView4" android:layout_height="wrap_content" android:textStyle="bold" android:textColor="#FF000000" android:layout_width="wrap_content" android:gravity="left" android:layout_gravity="left" android:layout_weight="44"></TextView>
     </LinearLayout>
     <LinearLayout android:id="@+id/linearLayout3" android:layout_height="wrap_content" android:layout_width="wrap_content">
-        <ImageView android:src="@drawable/bar0" android:layout_height="wrap_content" android:id="@+id/ivLoyalty" android:layout_weight="33" android:layout_width="wrap_content" android:layout_gravity="center_horizontal"></ImageView>
-        <ImageView android:src="@drawable/day1" android:id="@+id/imageView5" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_width="50dp" android:layout_weight="33"></ImageView>
-        <ImageView android:src="@drawable/bar0" android:layout_height="wrap_content" android:id="@+id/ivMood" android:layout_width="wrap_content" android:layout_weight="33" android:layout_gravity="center_horizontal"></ImageView>
+        <ImageView android:src="@drawable/bar0" android:layout_height="wrap_content" android:id="@+id/ivLoyalty" android:layout_weight="33" android:layout_gravity="center_horizontal" android:layout_width="fill_parent"></ImageView>
+        <TextView android:textStyle="bold" android:textColor="#ff000000" android:textSize="15dp" android:id="@+id/tvAge" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="50" android:layout_gravity="center_horizontal" android:gravity="center_horizontal"></TextView>
+        <ImageView android:src="@drawable/bar0" android:layout_height="wrap_content" android:id="@+id/ivMood" android:layout_weight="33" android:layout_gravity="center_horizontal" android:layout_width="fill_parent"></ImageView>
     </LinearLayout>
     
     </TableLayout>

@@ -8,7 +8,7 @@
     <application	    
     android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
         <activity android:name=".myMain"
-                  android:label="@string/app_name"
+        		android:label="@string/app_name"
                   android:configChanges="keyboardHidden|orientation"
                   android:screenOrientation ="portrait">            
             <intent-filter>
@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".myMenu"
-                  android:label="@string/app_name"
+        		android:label=""
                   android:configChanges="keyboardHidden|orientation"
                   android:screenOrientation ="portrait">
             <intent-filter>
@@ -27,7 +27,7 @@
         </activity>
         
         <activity android:name=".newGame"
-                  android:label="@string/app_name"
+        		android:label=""
                   android:configChanges="keyboardHidden|orientation"
                   android:screenOrientation ="portrait">
             <intent-filter>
@@ -35,16 +35,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-             
-
+        
         <activity android:name=".options"
-                  android:label="@string/app_name">
+        android:label=""
+        android:theme="@android:style/Theme.Dialog"
+        android:configChanges="keyboardHidden|orientation" >
             <intent-filter>
                 <action android:name="tama.care.spel.Options" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         
         <activity android:name=".myHelp"
                   android:label="Help"
@@ -55,10 +55,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+                <activity android:name=".myStartoverscreen"
+                	android:label=""
+                  android:theme="@android:style/Theme.Dialog"
+                  android:configChanges="keyboardHidden|orientation">
+            <intent-filter>
+                <action android:name="tama.care.spel.Over" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         
-     
         <activity android:name=".credits"
-                  android:label=""
+        			android:label=""
                   android:theme="@android:style/Theme.Dialog"
                   android:configChanges="keyboardHidden|orientation"
                   android:screenOrientation ="portrait">
@@ -68,7 +76,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".myGame"
-                  android:label="@string/app_name"
+        			android:label=""
                   android:configChanges="keyboardHidden|orientation"
                   android:screenOrientation ="portrait">
             <intent-filter>
@@ -76,6 +84,5 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-   
     </application>
 </manifest>

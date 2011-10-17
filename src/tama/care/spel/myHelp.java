@@ -73,14 +73,9 @@ public class myHelp extends Activity{
 				}
 			}
 		});
-	
-
-	
 	}
 	
-	
 	public void changePage(){
-		
 		// own method that changes the page, by using visibility
 		switch(page){
 			case 1:
@@ -114,8 +109,8 @@ public class myHelp extends Activity{
 				showPic2.setVisibility(8);
 				break;
 		}
-		
 	}
+	
 	//Fixes the bug restarting activity when screen rotates
 	public void onConfigurationChanged(Configuration newConfig) {
 		// TODO Auto-generated method stub
