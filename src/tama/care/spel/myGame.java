@@ -96,7 +96,7 @@ public class myGame extends Activity{
 		//INITIATE THE GAME!
 		initGame();
 		
-		//This is needed for real-time update
+		//This is needed for real-time update (TIMER)
 		updateThis = new TimerTask() { 
 	        public void run() { 
 	        	handler.post(new Runnable() { 
@@ -108,6 +108,7 @@ public class myGame extends Activity{
 	        				updateTheGame();
 	        				counter = 0;
 	        			}
+	        			//character sleeps if inactive for 30 sec
 	        			inactiveCount++;
 		        		if(inactiveCount == 30 && isCharNeutral && !gameIsPaused){
 		        			switchCharImage(7);
@@ -116,9 +117,9 @@ public class myGame extends Activity{
 	                } 
 	            }); 
 	    }}; 
-	    //activates the update
+	    //activates the timer
 	    timerThis.schedule(updateThis, delay, period);
-	    
+	    //onClick for character image
 		myChar.setOnClickListener(new View.OnClickListener() {
 				
 			@Override
@@ -127,12 +128,14 @@ public class myGame extends Activity{
 				//IF AUTO DECREASE IS ACTIVE CLICKING ON CHAR PIC WILL DO NOTHING
 				if(!updateBarIsOn){
 					if(bAction>0){
+						//by setting to false, user can't perform another action while on is already active 
 						myChar.setClickable(false);
 						onlyOneClick = false;
 					}
 					bActionOnUse = bAction;
 	        		bAction = 0;
 	        		temp = bActionOnUse;
+	        		//if character sleep image
 	        		if(!isCharNeutral){
 	        			int afterSleepDelay;
 	        			if(bActionOnUse == 4){
@@ -150,12 +153,16 @@ public class myGame extends Activity{
 	    					//set back neutral character image
 		        			setCharImage();
 	    				}
+	    				//Do the button action
+	    				//if before char was sleep, delay 300ms
     				    handler.postDelayed(new Runnable() { 
     						public void run() {
     							OnCharClickOpt();
     						}
     					}, afterSleepDelay);
 	        		}
+	        		//Do the button action
+    				//if char was neutral
 	        		else{
 	        			OnCharClickOpt();
 	        		}
@@ -209,7 +216,7 @@ public class myGame extends Activity{
 		});
 		
 	}
-	
+	//INIT the game w/o saved game
 	public void initGame(){
 		//game is started
 		gameOver = false;
@@ -278,35 +285,43 @@ public class myGame extends Activity{
 		checkEndAction();
 		updateBarIsOn = false;
 	}
-	
+	//The button action method
 	public void OnCharClickOpt(){
+		//bactionOnUse is set to which button is pressed (activated)
 		switch(bActionOnUse){
 			case 1: //FEED
 				if(bar[1] != 10){
 					switchCharImage(bActionOnUse);
-					moodChanger(1);
-					sleepThenDo();
+					moodChanger(1); //(=1 increase mood)
+					sleepThenDo(); //the method that will change back char image, see method)
 					forceIt = 0;
 				}
+				//Feed it when hungry bar = 10 only if forced (slap to force)
 				else{
 					if(forceIt == 1){
+						//increase counter for puke
 						pukeOn3++;
 						if(pukeOn3 == 3){
 		        			timeToPuke = true;
 		        		}
 						if(timeToPuke){
+							//run the method to puke
 							makeItPuke();
+							//reset counter
 							pukeOn3 = 0;
+							//not forced any more
 							forceIt = 0;
 							timeToPuke = false;
 						}
+						//if not time to puke feed it more
 						else{
 							switchCharImage(bActionOnUse);
-							moodChanger(2);
+							moodChanger(2); //(=2 decrease mood)
 							sleepThenDo();
 							forceIt = 0;
 						}
 					}
+					//if hungry bar full and not force deny to eat
 					else{
 						switchCharImage(5);
 						moodChanger(2);
@@ -316,6 +331,7 @@ public class myGame extends Activity{
 				break;
 			case 2: //CLEAN
 				forceIt = 0;
+				//if hygiene bar not full clean it else deny
 				if(bar[2] != 10){
 					switchCharImage(bActionOnUse);
 					moodChanger(1);
@@ -329,19 +345,21 @@ public class myGame extends Activity{
 				break;
 			case 3: //PLAY
 				forceIt = 0;
+				//if loyalty bar not full (=10) play else deny
 				if(bar[3] != 10){
 					switchCharImage(bActionOnUse);
 					moodChanger(1);
 					sleepThenDo();
 				}
 				else{
-					switchCharImage(5);
+					switchCharImage(5); //(=5 is for deny, see method)
 					moodChanger(2);
 					sleepThenDo();
 				}
 				break;
 			case 4: //SLAP
 				forceIt = 1;
+				//simply slap it
 				switchCharImage(bActionOnUse);
 				moodChanger(2);
 				sleepThenDo();
@@ -353,15 +371,21 @@ public class myGame extends Activity{
 		// SLEEP 2000 MILLISECONDS HERE ... 
 	    handler.postDelayed(new Runnable() { 
 	    	public void run() {
+	    		//stop button(action) sound
 	    		mpAction.reset();
+	    		//set neutral char image
 	    		setCharImage();
+	    		//decrease loyalty bar if slapped
 	        	if(bActionOnUse == 4){
 	        		bar[3]--;
 	        	}
+	        	//else go to following method to see which bar to increase
 	        	else{
 	        		increaseBar();
 	        	}
+	        	//change bar image accordingly to bar value
 	        	changeBarImage();
+	        	//make char image clickable
 	        	myChar.setClickable(true);
 	        	onlyOneClick = true;
 	        	checkEndAction();
@@ -370,7 +394,7 @@ public class myGame extends Activity{
 	}
 	
 	public void setCharImage(){
-		//Set standard character image
+		//Set standard character image accordingly to race
 		switch (charRace){
 			case 1:
 				myChar.setImageResource(R.drawable.neutralfluffy);
@@ -385,8 +409,8 @@ public class myGame extends Activity{
 		isCharNeutral = true;
 	}
 	
+	//method to adjust background image to current time
 	public void adjustBackground(){
-		
 		hourOld = dt.getHours();
 		
 		if(hourOld>=4 && hourOld<=9){
@@ -406,11 +430,13 @@ public class myGame extends Activity{
 	public void switchCharImage(int actionNR){
 	    //Switch the character image(eating, cleaning, playing,
 	    //slapped) accordingly to which button is pressed
+		//also accordingly to race
 	    switch(actionNR){
 	    	case 1: 
 	    		//"EATING" image
 	    		mpAction = MediaPlayer.create(this, R.raw.eatingsound);
 	    		//check this method before playing
+	    		//if game on mute there wont be any no sound
 	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
@@ -428,6 +454,7 @@ public class myGame extends Activity{
 	    		//"CLEANING" image
 	    		mpAction = MediaPlayer.create(this, R.raw.cleaningsound);
 	    		//check this method before playing
+	    		//if game on mute there wont be any no sound
 	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
@@ -445,6 +472,7 @@ public class myGame extends Activity{
 	    		//"PLAYING" image
 	    		mpAction = MediaPlayer.create(this, R.raw.playingsound);
 	    		//check this method before playing
+	    		//if game on mute there wont be any no sound
 	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
@@ -462,6 +490,7 @@ public class myGame extends Activity{
 	    		//"SLAPPED" image
 	    		mpAction = MediaPlayer.create(this, R.raw.slapingsound);
 	    		//check this method before playing
+	    		//if game on mute there wont be any no sound
 	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
@@ -479,6 +508,7 @@ public class myGame extends Activity{
 	    		//"CHARACTER DENIES" image, same for all actions
 	    		mpAction = MediaPlayer.create(this, R.raw.denysound);
 	    		//check this method before playing
+	    		//if game on mute there wont be any no sound
 	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
@@ -496,6 +526,7 @@ public class myGame extends Activity{
 	    		//"CHARACTER PUKES" image
 	    		mpAction = MediaPlayer.create(this, R.raw.pukesound);
 	    		//check this method before playing
+	    		//if game on mute there wont be any no sound
 	    		options.isMpActionOnMute(1);
 	    		switch(charRace){
 	    			case 1:
@@ -513,6 +544,7 @@ public class myGame extends Activity{
 	    		//"CHARACTER SLEEPS" image
 	    		mpAction = MediaPlayer.create(this, R.raw.sleepingsound);
 	    		//check this method before playing
+	    		//if game on mute there wont be any no sound
 	    		options.isMpActionOnMute(1);
 	    		mpAction.setLooping(true);
 	    		switch(charRace){
@@ -530,7 +562,7 @@ public class myGame extends Activity{
 	    		break;
 	    }
 	}
-	
+	//handles the mood bar on game screen
 	public void moodChanger(int mood){
 		statusBar = (ImageView) findViewById(R.id.ivMood);
 		if(mood == 1 && bar[4] >=0 && bar[4] <4){
@@ -557,21 +589,25 @@ public class myGame extends Activity{
 				break;
 		}
 	}
-	
+	//the puke method, if char force to eat 3 time this method is called
 	public void makeItPuke(){
 		switchCharImage(6);
+		//set mood to angry
 		bar[4] = 0;
-		moodChanger(0);
+		//change bar picture accordingly to value
+		moodChanger(0); //(=0 only adjust image)
 		handler.postDelayed(new Runnable() { 
 			public void run() {
 				mpAction.reset();
 				//If hygiene bar is 0 after wake up show not change back to stinky instead of neutral
 				if(bar[2] == 0){
+					//if char stinky then change back to stinky char image and not the neutral
 					checkEndAction();
 				}else{
 					//set back neutral character image
         			setCharImage();
 				}
+				//decrease hungry bar to 4
 		        bar[1] = 4;
 		        changeBarImage();
 		        
@@ -580,7 +616,7 @@ public class myGame extends Activity{
 			}
 		}, 2000);
 	}
-	
+	//the mthod that increases bar value according ly to action
 	public void increaseBar(){
 		switch(bar[bActionOnUse]){
 			case 0:
@@ -615,7 +651,7 @@ public class myGame extends Activity{
 				break;
 		}
 	}
-	
+	//the method that adjusts bar image (not mood bar)
 	public void changeBarImage(){
 		if(bActionOnUse == 4){
 			bActionOnUse = 3;
@@ -667,7 +703,7 @@ public class myGame extends Activity{
 				break;
 		}
 	}
-	
+	//This method checks if character is dead,leaving or stinky
 	public void checkEndAction(){
 		if(bar[1]<=0){
 			if(!isCharNeutral){
@@ -676,6 +712,7 @@ public class myGame extends Activity{
 			mpAction = MediaPlayer.create(this, R.raw.deadsound);
 			myMenu.mpBackgroundSound.pause();
 			//check this method before playing
+			//if game on mute there wont be any no sound
     		options.isMpActionOnMute(1);
 			switch(charRace){
 				case 1:
@@ -688,15 +725,17 @@ public class myGame extends Activity{
 					myChar.setImageResource(R.drawable.deaddrako);
 					break;
 			}
+			//if dead gameover
 			gameOver = true;
 		}
 		else if(bar[2]<=0){
 			if(!isCharNeutral){
 				mpAction.reset();
 			}
+			//if stinky, game not over, just change char image
+			//and continue with that stinky image until hygiene goes >0
 			switch(charRace){
 				case 1:
-					//SHOULD BE DIRTY HERE
 					myChar.setImageResource(R.drawable.stinkyfluffy);
 					break;
 				case 2:
@@ -714,6 +753,7 @@ public class myGame extends Activity{
 			mpAction = MediaPlayer.create(this, R.raw.leavingsound);
 			myMenu.mpBackgroundSound.pause();
 			//check this method before playing
+			//if game on mute there wont be any no sound
     		options.isMpActionOnMute(1);
 			switch(charRace){
 				case 1:
@@ -726,22 +766,27 @@ public class myGame extends Activity{
 					myChar.setImageResource(R.drawable.leavingdrako);
 					break;
 			}
+			//if leaving game over
 			gameOver = true;
 		}
+		//if game over do this
 		if(gameOver){
 			myChar.setClickable(false);
 			updateThis.cancel();
+			//delete saved file
 			deleteSaveGame();
+			//delay for 10 sec to make the user realize its over
 			handler.postDelayed(new Runnable() { 
 				public void run() {
 					mpAction.reset();
 					myMenu.mpBackgroundSound.start();
+					//finish the gamescreen, go to menu screen
 					finish();
 				}
 			}, 10000);
 		}
 	}
-	
+	//get the current time
 	public void getTimeAndDate(){
 		hourOld = dt.getHours();
 		dayOld = dt.getDate();
@@ -755,7 +800,7 @@ public class myGame extends Activity{
 		// TODO Auto-generated method stub
 		super.onConfigurationChanged(newConfig);
 	}
-	
+	//save variables that is necessary to continue game
 	public void saveGame(){
 		editor = gameFile.edit();
 		editor.putBoolean("isSaveGame", true);
@@ -772,39 +817,43 @@ public class myGame extends Activity{
 		editor.putInt("year", yearOld);
 		editor.commit();
 	}
-	
+	//save opt values to file
 	public static void saveOptValues(){
 		editor = gameFile.edit();
 		editor.putBoolean("isMuteOn", myMenu.muteOn);
 		editor.putInt("updateSpeed", myMenu.updateSpeed);
 		editor.commit();
 	}
-	
+	//delete method
 	public static void deleteSaveGame(){
 		editor = myGame.gameFile.edit();
 		editor.clear();
 		editor.commit();
 	}
-
+	//onpause is called if u press back or home button on phone
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
+		//stop sound
 		mpAction.reset();
 		super.onPause();
 		gameIsPaused = true;
+		//stop sound
 		myMenu.mpBackgroundSound.pause();
 		saveOptValues();
+		//if game over and user didn't want to wait the 10 sec the game finishes.
 		if(gameOver){
 			myMenu.mpBackgroundSound.start();
 			finish();
 		}
+		//else just get current time and save
 		else{
 			getTimeAndDate();
 			saveGame();
 			updateThis.cancel();
 		}
 	}
-
+	//Is called when return the game screen
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub

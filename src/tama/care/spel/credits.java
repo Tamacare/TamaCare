@@ -29,6 +29,7 @@ public class credits extends Activity{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		//pause background sound
 		myMenu.mpBackgroundSound.pause();
 	}
 	

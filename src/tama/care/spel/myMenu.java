@@ -76,6 +76,7 @@ public class myMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				//is there is already a saved game, ask if user wants to delete it and create new game
 				if(saveGameExist){
 					startActivity(new Intent("tama.care.spel.Over"));
 				}
@@ -134,25 +135,27 @@ public class myMenu extends Activity {
 			}
 		});
 	}
-	
+	//get current time (new)
 	public void getNewTimeAndDate(){
 		hourNew = dt.getHours();
 		dayNew = dt.getDate();
 		monthNew = dt.getMonth()+1;
 		yearNew = dt.getYear();
 	}
-	
+	//this method checks if there is a saved game
 	public void checkIfGameSaved(){
 		myGame.gameFile = getSharedPreferences(myGame.FILENAME, 0);
 		saveGameExist = myGame.gameFile.getBoolean("isSaveGame", false);
 		//CHECK IF SAVE GAME EXIST
 		if(saveGameExist){
+			//set the continue button visible (is not visible for the first time since there is no saved game)
 			bContinue.setVisibility(0);
 		}else{
+			//else set invisible
 			bContinue.setVisibility(4);
 		}
 	}
-	
+	//Retrieve saved game
 	public void loadGame(){
 		savedName = myGame.gameFile.getString("characerName", "DEFAULT");
 		savedRace = myGame.gameFile.getInt("characterRace", 0);

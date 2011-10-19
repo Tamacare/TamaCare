@@ -27,6 +27,7 @@ public class myStartoverscreen extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//sets the viewing page
+				//if yes pressed deleted saved game and start the newgame screen
 				myGame.deleteSaveGame();
 				myMenu.saveGameExist = false;
 				startActivity(new Intent("tama.care.spel.NewGame"));
@@ -40,6 +41,7 @@ public class myStartoverscreen extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//sets the viewing page
+				//if no pressed return to menu screen
 				finish();			
 			}
 		});

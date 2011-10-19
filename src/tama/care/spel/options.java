@@ -22,7 +22,7 @@ public class options extends Activity{
 		Button usBslow = (Button) findViewById(R.id.updatespeedBslow);
 		Button usBnormal = (Button) findViewById(R.id.updatespeedBnormal);
 		
-		
+		//sound button for on
 		soundBon.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -30,11 +30,12 @@ public class options extends Activity{
 				// TODO Auto-generated method stub
 				//sets the viewing page
 				myMenu.muteOn = false;
+				//check if sound need to be muted
 				isOtherMpSoundsOnMute();
 			}
 		});
 
-		
+		//sound button for off
 		soundBoff.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -42,11 +43,12 @@ public class options extends Activity{
 				// TODO Auto-generated method stub
 				//sets the viewing page
 				myMenu.muteOn = true;
+				//check if sound need to be muted
 				isOtherMpSoundsOnMute();
 			}
 		});
 
-		
+		//button for updatespeed slow
 		usBslow.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -58,6 +60,7 @@ public class options extends Activity{
 			}
 		});
 		
+		//button for updatespeed normal
 		usBnormal.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -69,7 +72,8 @@ public class options extends Activity{
 		});
 		
 	}
-	
+	//this method is called from myGame
+	//to check if sound is on mute
 	public static void isMpActionOnMute(int playIt){
 		if(myMenu.muteOn){
 			myGame.mpAction.setVolume(0.0f, 0.0f);
@@ -81,7 +85,7 @@ public class options extends Activity{
 			myGame.mpAction.start();
 		}
 	}
-	
+	//this method is needed to mute or not the rest of the sounds
 	public static void isOtherMpSoundsOnMute(){
 		if(myMenu.muteOn){
 			//Set volume off (0) 

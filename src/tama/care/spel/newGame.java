@@ -45,7 +45,8 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub				
+				// TODO Auto-generated method stub
+				//if cancel pressed return to menu screen
 				onDestroy();
 			}
 		});
@@ -56,7 +57,9 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				//get entered name from edit box and put it in string sn
 				sn = writeName.getText().toString();
+				//Don't create new game unless user has entered both name and race
 				if(sn.equalsIgnoreCase("") && cRace == 0){
 					showErrorMsg.setText(R.string.errorNameRace);
 				}
@@ -80,7 +83,7 @@ public class newGame extends Activity implements OnCheckedChangeListener{
 	@Override
 	public void onCheckedChanged(RadioGroup arg0, int arg1) {
 		// TODO Auto-generated method stub
-		
+		//show the char image accordingly to pick at race
 		switch (arg1){
 			case R.id.rbFluffy:
 				charPic.setImageResource(R.drawable.neutralfluffy);

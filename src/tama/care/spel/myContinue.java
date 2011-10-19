@@ -17,7 +17,9 @@ public class myContinue{
 	static int monthWithTotalDay[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
 	static int dBOANM = 0;
 	
+	//Calculate hour difference between last time active and recent time
 	public static void calculateTimeDiff(){
+		//New is current time and saved is the saved time from last time.
 		diffHour = myMenu.hourNew - myMenu.savedHour;
 		diffDay = myMenu.dayNew - myMenu.savedDay;
 		diffMonth = myMenu.monthNew - myMenu.savedMonth;
@@ -56,6 +58,8 @@ public class myContinue{
 				}
 			}
 		}
+		//add all together and get hour diff.
+		//different for when month= 0 to avoid time bug
 		if(diffMonth == 0){
 			diffTotalHours = diffHour + 24*diffDay + 24*365*diffYear;
 		}
@@ -63,7 +67,7 @@ public class myContinue{
 			diffTotalHours = diffHour + 24*diffDay + 24*daysBetweenOldAndNewMonth() + 24*365*diffYear;
 		}
 	}
-
+	//Method that returns how many days is in that month.
 	public static int dayAddition(){
 		for(int i = 1; i<=12; i++){
 			if(myMenu.savedMonth == i){
@@ -72,16 +76,19 @@ public class myContinue{
 		}
 		return 0;
 	}
-	
+	//Calculates how many days between last times month and current month
 	public static int daysBetweenOldAndNewMonth(){
 		//reset dBOANM
 		dBOANM = 0;
+		//Following if:s is to avoid bugs such as ex. new month = march old= october
+		//do this if, when old is a lower month than new month in same year
 		if(myMenu.savedMonth < myMenu.monthNew){
 			for(int j = (myMenu.savedMonth); j<myMenu.monthNew; j++){
 				dBOANM += monthWithTotalDay[j];
 			}
 			return dBOANM;
 		}
+		//do this if, when old is a larger month (nr) than new (ex. this may happen when old year is 2010 and new year is 2011)
 		else if(myMenu.savedMonth > myMenu.monthNew){
 			for(int j = (myMenu.monthNew-1); j<myMenu.savedMonth; j--){
 				dBOANM += monthWithTotalDay[j];
@@ -94,14 +101,17 @@ public class myContinue{
 			}
 			return dBOANM;
 		}
+		//do this if its exactly 1 year ago
 		else{
 			return 365;
 		}
 	}
-	
+	//this method calculates how much bars will decrease since last this, and how much age will increase
 	public static void calculateAgeAndBarValue(){
 		newAge = myMenu.savedAge + diffTotalHours/24;
 		//slow speed
+		//-1 / 5hours for bars
+		//-1 / 10 hours for mood bar
 		if(myMenu.updateSpeed == 3600){
 			newHungryBar = myMenu.savedHungryBar + (-1*diffTotalHours/5);
 			newHygienBar = myMenu.savedHygienBar + (-1*diffTotalHours/5);
@@ -109,6 +119,8 @@ public class myContinue{
 			newMoodBar = myMenu.savedMoodBar + (-1*diffTotalHours/10);
 		}
 		//normal speed
+		//-1 / hour
+		//-1 / 5 hours for mood bar
 		if(myMenu.updateSpeed == 60){
 			newHungryBar = myMenu.savedHungryBar + (-1*diffTotalHours);
 			newHygienBar = myMenu.savedHygienBar + (-1*diffTotalHours);
@@ -116,7 +128,7 @@ public class myContinue{
 			newMoodBar = myMenu.savedMoodBar + (-1*diffTotalHours/5);
 		}
 	}
-	
+	//this method apply the new changes
 	public static void applyChanges(){
 		myGame.nameIt = myMenu.savedName;
 		myGame.charRace = myMenu.savedRace;
@@ -126,6 +138,7 @@ public class myContinue{
 		myGame.bar[3] = newLoyaltyBar;
 		myGame.bar[4] = newMoodBar;
 		
+		//don't decrease more than 0. Only matters for hygiene bar.
 		for(int a=1; a<=4; a++){
 			if(myGame.bar[a] < 0){
 				myGame.bar[a] = 0;

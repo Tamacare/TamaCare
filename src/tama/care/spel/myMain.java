@@ -18,11 +18,11 @@ public class myMain extends Activity {
         setContentView(R.layout.splashscreen);
         
         itsOnPause = false;
-        
+        //Start splash sound
         mpSplash = MediaPlayer.create(this, R.raw.splash);
         checkIfMuteOn();
         mpSplash.start();
-        
+        //create new thread to be able to do while
         Thread logoTimer = new Thread(){
         	public void run(){
         		try{
@@ -48,12 +48,12 @@ public class myMain extends Activity {
         
         logoTimer.start();
     }
-    
+    //this method checks if sound was saved
     public void checkIfMuteOn(){
     	//check if mute is on, if there is no saved filed mute is off
 		myGame.gameFile = getSharedPreferences(myGame.FILENAME, 0);
 		myMenu.muteOn = myGame.gameFile.getBoolean("isMuteOn", false);
-		
+		//if its on mute, mute the splash screen sound
 		if(myMenu.muteOn){
 			mpSplash.setVolume(0.0f, 0.0f);
 		}else{
